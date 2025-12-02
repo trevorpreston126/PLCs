@@ -1,0 +1,84 @@
+Descriptor Reference,Checklist Descriptor
+CPU,Fetch decode execue cycle
+CPU,Common CPU components and their function
+CPU,Von Neumann architecture
+CPU,The common characteristics of CPUs
+CPU,Embedded systems
+Memory,The need for primary storage
+Memory,RAM and ROM
+Memory,Virtual memory
+Memory,The need for secondary storage
+Memory,Common types of storage
+Memory,Suitable storage devices and storage media
+Memory,Data capacity and calculation of data capacity requirements
+Memory,The units of data storage
+Data Representation,How data needs to be converted into binary to be processed by a computer
+Data Representation,Converting between denary and 8-bit binary
+Data Representation,Converting between denary and 2-digit hexadecimal
+Data Representation,Adding two 8-bit binary integers
+Data Representation,Binary shifts
+Data Representation,Representing characters and character sets
+Data Representation,Representing sound
+Data Representation,Compression
+Computer Networks,Types of networks
+Computer Networks, Client-server and peer-to-peer networks
+Computer Networks, Factors that affect the performance of networks
+Computer Networks,Hardware to connect a LAN
+Computer Networks,The internet
+Computer Networks,Star and mesh network topologies
+Computer Networks,"Modes of connection, wired and wireless"
+Encryption,Wireless encryption
+Protocols,The use of IP and MAC addressing
+Protocols,The need for network standards
+Protocols,Common protocols
+Protocols,The concept of layers
+Network Security,Threats posed to networks
+Network Security,Forms of attack
+Network Security,Identifying and preventing vulnerabilities
+Operating systems,The purpose and functionality of operating systems
+Operating systems,Operating systems - interfaces
+Operating systems,Operating systems - user management
+Operating systems,Utility system software
+Ethics,How to investigate and discuss computer science technologies
+Ethics,Privacy issues
+Ethics,Cultural implications of computer science
+Environment,Environmental impact of computer science
+Cultural,Impacts of digital technology on wider society
+Legal,Legislation relevant to computer science
+Legal, Open source vs proprietary software
+Computational thinking,Abstraction
+Computational thinking,Decomposition
+Computational thinking,Algorithmic thinking
+Computational thinking,"Inputs, processes and outputs"
+Computational thinking, Structure diagrams
+Algorithms,How to produce algorithms using pseudocode and flow diagrams
+Programming,dentifying errors and suggesting fixes
+Programming,Trace tables
+Algorithms,Binary search
+Algorithms,Linear search
+Algorithms,Merge sort
+Algorithms,Insertion sort
+Programming,"The use of variables, constants, inputs, outputs and assignments"
+Programming,Three basic programming constructs
+Programming,The common arithmetic and comparison operators
+Programming,The common Boolean operators
+Programming,The use of data types and casting
+Programming, The use of basic string manipulation
+Programming,The use of arrays
+Programming,How to use sub programs
+Programming,Random number generation
+Logic and language,Defensive design - Imput validation
+Logic and language,Defensive design - anticipating misuese
+Logic and language,Maintainability
+Logic and language,The purpose and types of testing
+Logic and language,How to identify syntax and logic errors
+Logic and language,Suitable test data
+Logic and language,Refining algorithms to make them more robust
+Boolean Logic, Simple logic diagrams
+Boolean Logic,Truth tables
+Boolean Logic,Combining Boolean operators
+Boolean Logic,Applying logical operators in truth tables to solve problems
+Programming languages, Characteristics and purpose of different levels of programming language
+Programming languages, The purpose of translators
+Programming languages,Characteristics of compilers and interpreters
+Programming languages,IDEs

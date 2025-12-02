@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Overview</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f9; color: #333; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 10px 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .header h1 { margin: 0; color: #0056b3; }
+        .header a { text-decoration: none; color: #d9534f; padding: 8px 15px; border: 1px solid #d9534f; border-radius: 4px; transition: background-color 0.3s; }
+        .header a:hover { background-color: #f2dede; }
+        
+        /* Message Box Styling */
+        .message-box { 
+            background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; 
+            padding: 10px; margin-bottom: 20px; border-radius: 4px; 
+            font-weight: bold; text-align: center;
+        }
+
+        /* Management Section */
+        .management-container { 
+            display: flex; 
+            gap: 20px; 
+            margin-bottom: 30px; 
+            padding: 20px; 
+            background-color: #fff; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            flex-wrap: wrap; /* Allows sections to wrap on smaller screens */
+        }
+        .management-form { 
+            flex: 1 1 300px; /* Flex basis for wrapping */
+            padding: 15px; 
+            border: 1px solid #eee; 
+            border-radius: 6px; 
+        }
+        .management-form h4 { margin-top: 0; border-bottom: 2px solid #0056b3; padding-bottom: 5px; color: #0056b3; }
+        .management-form label { display: block; margin-top: 10px; font-weight: bold; }
+        .management-form input[type="text"], 
+        .management-form select { 
+            width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; 
+        }
+        .management-form button { 
+            margin-top: 15px; padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.3s; 
+            width: 100%;
+        }
+        .management-form button:hover { background-color: #0056b3; }
+        .delete-form button { background-color: #dc3545; }
+        .delete-form button:hover { background-color: #c82333; }
+
+        /* Progress Table */
+        .progress-table { width: 100%; border-collapse: collapse; background-color: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .progress-table th, .progress-table td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+        .progress-table th { background-color: #0056b3; color: white; font-weight: bold; position: sticky; top: 0; z-index: 10; }
+        .topic-name { text-align: left; font-weight: 500; min-width: 250px; }
+        .status-cell { width: 70px; }
+        .status-cell div { width: 100%; height: 25px; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #333; font-size: 10px; font-weight: bold; }
+        
+        /* Color Styling */
+        {% for status, color in status_colors.items() %}
+            .status-{{ status.lower() }} { background-color: {{ color }}; }
+        {% endfor %}
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🎓 Teacher Progress Overview</h1>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+
+    {% if message %}
+        <div class="message-box">{{ message }}</div>
+    {% endif %}
+
+    <p style="text-align: right; margin-bottom: 20px; font-size: 0.9em;">Last updated: {{ current_time }}</p>
+
+    <div class="management-container">
+        
+        <div class="management-form" style="border-color: #007bff;">
+            <h4>➕ Add New Student</h4>
+            <form method="POST" action="{{ url_for('manage_users') }}">
+                <input type="hidden" name="action" value="add">
+                <label for="new_username">Username:</label>
+                <input type="text" id="new_username" name="new_username" placeholder="Enter new username" required>
+                <label for="new_password">Password:</label>
+                <input type="text" id="new_password" name="new_password" placeholder="Enter password" required>
+                <button type="submit">Add Student</button>
+            </form>
+        </div>
+        
+        <div class="management-form" style="border-color: #ffc107;">
+            <h4>✏️ Edit Student Details</h4>
+            <form method="POST" action="{{ url_for('manage_users') }}">
+                <input type="hidden" name="action" value="update">
+                <label for="original_username_edit">Select Student to Edit:</label>
+                <select id="original_username_edit" name="original_username" onchange="loadStudentDetails(this.value)" required>
+                    <option value="">-- Select Student --</option>
+                    {% for user in student_users %}
+                        <option value="{{ user }}">{{ user }}</option>
+                    {% endfor %}
+                </select>
+                
+                <label for="edit_username" style="margin-top: 10px;">New Username:</label>
+                <input type="text" id="edit_username" name="edit_username" placeholder="New Username" required>
+                <label for="edit_password">New Password:</label>
+                <input type="text" id="edit_password" name="edit_password" placeholder="New Password" required>
+                <button type="submit">Update Details</button>
+            </form>
+        </div>
+
+        <div class="management-form delete-form" style="border-color: #dc3545;">
+            <h4>❌ Delete Student</h4>
+            <form method="POST" action="{{ url_for('manage_users') }}">
+                <input type="hidden" name="action" value="delete">
+                <label for="delete_username">Select Student to Delete:</label>
+                <select id="delete_username" name="delete_username" required>
+                    <option value="">-- Select Student --</option>
+                    {% for user in student_users %}
+                        <option value="{{ user }}">{{ user }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" onclick="return confirm('WARNING: Are you sure you want to PERMANENTLY delete this student and ALL their progress? This cannot be undone.');">Delete Student</button>
+            </form>
+        </div>
+        
+    </div> <hr/>
+
+    <h2>Class Progress Tracker</h2>
+    
+    <div style="overflow-x: auto;">
+        <table class="progress-table">
+            <thead>
+                <tr>
+                    <th class="topic-name">Topic (ID)</th>
+                    {% for user in student_users %}
+                        <th>{{ user }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in table_rows %}
+                    <tr>
+                        <td class="topic-name">{{ row.name }} ({{ row.id }})</td>
+                        {% for user in student_users %}
+                            {% set status = row.student_data[user] %}
+                            <td class="status-cell">
+                                <div class="status-{{ status.lower() }}" title="{{ user }} status: {{ status }}">
+                                    </div>
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>

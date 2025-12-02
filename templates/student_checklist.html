@@ -1,0 +1,54 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Checklist - {{ username | title }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background-color: #f4f4f9; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        h1 { color: #333; }
+        .checklist-container { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .topic-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
+        .topic-item:last-child { border-bottom: none; }
+        .topic-name { flex-grow: 1; margin-right: 10px; }
+        select { padding: 5px; border-radius: 4px; border: 1px solid #ccc; font-weight: bold; }
+        
+        /* RAG Color Styling */
+        {% for status, color in status_colors.items() %}
+            .status-{{ status }} { background-color: {{ color }}; }
+        {% endfor %}
+        
+        button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; transition: background-color 0.3s; }
+        button:hover { background-color: #45a049; }
+        .message { margin-top: 15px; font-weight: bold; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Learning Checklist (Welcome, {{ username | title }}!)</h1>
+        <a href="{{ url_for('logout') }}"><button style="background-color: #dc3545;">Logout</button></a>
+    </div>
+
+    <div class="checklist-container">
+        <form method="POST" action="{{ url_for('student_checklist') }}">
+            {% for topic in topics %}
+                <div class="topic-item">
+                    <div class="topic-name">**{{ topic.id }}.** {{ topic.name }}</div>
+                    <select name="status_{{ topic.id }}" id="status_{{ topic.id }}" class="status-{{ topic.status }}" onchange="this.className = 'status-' + this.value">
+                        {% for status in status_options %}
+                            <option value="{{ status }}" {% if topic.status == status %}selected{% endif %}>
+                                {{ status }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endfor %}
+            
+            <button type="submit">Save Progress</button>
+        </form>
+        
+        {% if message %}
+            <p class="message" style="color: {% if 'Error' in message %}red{% else %}green{% endif %};">{{ message }}</p>
+        {% endif %}
+    </div>
+</body>
